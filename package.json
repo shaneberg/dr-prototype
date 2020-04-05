@@ -1,29 +1,31 @@
 {
-  "name": "dr-prototype",
-  "version": "1.0.0",
-  "description": "A puzzle prototype",
-  "private": true,
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/seanhaneberg/dr-prototype.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/seanhaneberg/dr-prototype/issues"
-  },
-  "homepage": "https://github.com/seanhaneberg/dr-prototype#readme",
-  "devDependencies": {
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
-  },
-  "dependencies": {
-    "three": "^0.115.0"
-  }
+    "name": "dr-prototype",
+    "version": "1.0.0",
+    "description": "A puzzle prototype",
+    "private": true,
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "webpack-dev-server --open",
+        "build": "webpack"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/seanhaneberg/dr-prototype.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/seanhaneberg/dr-prototype/issues"
+    },
+    "homepage": "https://github.com/seanhaneberg/dr-prototype#readme",
+    "devDependencies": {
+        "webpack": "^4.42.1",
+        "webpack-cli": "^3.3.11",
+        "webpack-dev-server": "^3.10.3"
+    },
+    "dependencies": {
+        "three": "^0.115.0"
+    }
 }
