@@ -7,7 +7,8 @@ let camera = null;
 
 let pieceSize = 5;
 let padding = 1;
-
+let cursorPadding = 0.5;
+let cursorSize = pieceSize + cursorPadding;
 let getColorFromType = (type) => {
     switch (type) {
         case 'a':
@@ -21,6 +22,26 @@ let getColorFromType = (type) => {
         default:
             return 0x6A0DAD;
     }
+};
+
+
+let getLinesForCursor = (cursorPosition) => {
+    let color = 0xFFFFFF;
+    let x1 = (cursorPosition.x * cursorSize) + (cursorPadding * (cursorPosition.x + 1));
+    let x2 = x1 + cursorSize + cursorPadding;
+    let y1 = -((cursorPosition.y * cursorSize) + (cursorPadding * (cursorPosition.y + 1)));
+    let y2 = (y1 - (cursorSize + cursorPadding));
+    let points = [];
+    points.push( new THREE.Vector3(x1, y1, 0));
+    points.push( new THREE.Vector3(x1, y2, 0));
+    points.push( new THREE.Vector3(x2, y2, 0));
+    points.push( new THREE.Vector3(x2, y1, 0));
+    points.push( new THREE.Vector3(x1, y1, 0));
+
+    let geometry = new THREE.BufferGeometry().setFromPoints( points );
+    let material = new THREE.LineBasicMaterial( { color });
+    let line = new THREE.Line( geometry, material );
+    return line;
 };
 
 let getLinesForPiece = (piece) => {
@@ -48,11 +69,29 @@ renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
-// var geometry = new THREE.BoxGeometry();
-// jvar geometry = new THREE.BufferGeometry().setFromPoints( points );
-// jvar material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-// jvar cube = new THREE.Mesh( geometry, material );
-
+let cameraSpeed = 1;
+document.body.addEventListener('keydown', (event) => {
+    switch (event.key) {
+        case 'w':
+            camera.position.z -= cameraSpeed;
+            break;
+        case 's':
+            camera.position.z += cameraSpeed;
+            break;
+        case 'a':
+            camera.position.x -= cameraSpeed;
+            break;
+        case 'd':
+            camera.position.x += cameraSpeed;
+            break;
+        case 'q':
+            camera.position.y += cameraSpeed;
+            break;
+        case 'e':
+            camera.position.y -= cameraSpeed;
+            break;
+    }
+});
 
 let options = {
     height: 8,
@@ -70,52 +109,16 @@ board.forEach((cols) => {
     });
 });
 
+let cursor = getLinesForCursor(engine.getCursorPosition());
+scene.add(cursor);
+
 camera.position.z = 40;
 camera.position.y = -25;
 camera.position.x = 20;
 
 var animate = function () {
     requestAnimationFrame( animate );
-
-    // cube.rotation.x += 0.01;
-    // cube.rotation.y += 0.01;
-
     renderer.render( scene, camera );
 };
 
 animate();
-
-let threeElement = () => {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    let options = {
-        height: 10,
-        width: 8,
-        numTypes: 4,
-        minMatchSize: 3
-    };
-
-    let engine = new DoctorGameEngine(options);
-    // https://threejs.org/docs/#manual/en/introduction/Drawing-lines
-    let points = [];
-    points.push( new THREE.Vector3( - 10, 0, 0 ) );
-    points.push( new THREE.Vector3( 0, 10, 0 ) );
-    points.push( new THREE.Vector3( 10, 0, 0 ) );
-
-    let geometry = new THREE.BufferGeometry().setFromPoints( points );
-
-    let material = new THREE.LineBasicMaterial( { color: 0x0000ff } );
-
-    let line = new THREE.Line( geometry, material );
-
-    scene.add(line);
-    renderer.render( scene, camera );
-    return renderer.domElement;
-};
-
-// document.body.appendChild(threeElement());
-// renderer.render( scene, camera );
-

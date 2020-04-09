@@ -9,6 +9,10 @@
 export default class DoctorGameEngine {
     // TODO - use dependency injection for game state
     constructor(options) {
+        this.cursorPosition = {
+            x: 0,
+            y: 0
+        };
         this.height = options.height;
         this.width = options.width;
         this.numTypes = options.numTypes;
@@ -17,6 +21,25 @@ export default class DoctorGameEngine {
         let initResult = this.initialize();
 
         this.printBoard();
+    }
+
+    isInBounds(x, y) {
+        let isX = !(x < 0 || x > this.width);
+        let isY = !(y < 0 || y > this.height);
+        return isX && isY;
+    }
+
+    getCursorPosition() {
+        return this.cursorPosition;
+
+    }
+
+    setCursorPosition(x, y) {
+        if (isInBounds(x, y)) {
+            this.cursorPosition = { x, y };
+            return true;
+        }
+        return false;
     }
 
     createBoard(height, width) {
