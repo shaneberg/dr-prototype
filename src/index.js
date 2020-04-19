@@ -69,6 +69,18 @@ renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
+let moveCursor = (xDelta, yDelta) => {
+    let curPosition = engine.getCursorPosition();
+
+    if (engine.setCursorPosition(curPosition.x + xDelta, curPosition.y + yDelta)) {
+        let newPosition = engine.getCursorPosition();
+        cursor.position.x = newPosition.x * (pieceSize + padding);
+        cursor.position.y = newPosition.y * (pieceSize + padding);
+    } else {
+        console.log(`cannot move ${xDelta}, ${yDelta} because it is out of bounds`);
+    }
+};
+
 let cameraSpeed = 1;
 document.body.addEventListener('keydown', (event) => {
     switch (event.key) {
@@ -90,7 +102,20 @@ document.body.addEventListener('keydown', (event) => {
         case 'e':
             camera.position.y -= cameraSpeed;
             break;
+        case 'j':
+            moveCursor(0, -1);
+            break;
+        case 'k':
+            moveCursor(0, 1);
+            break;
+        case 'l':
+            moveCursor(1, 0);
+            break;
+        case 'h':
+            moveCursor(-1, 0);
+            break;
     }
+
 });
 
 let options = {

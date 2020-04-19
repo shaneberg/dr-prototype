@@ -24,8 +24,8 @@ export default class DoctorGameEngine {
     }
 
     isInBounds(x, y) {
-        let isX = !(x < 0 || x > this.width);
-        let isY = !(y < 0 || y > this.height);
+        let isX = !(x < 0 || x >= this.width);
+        let isY = !(y > 0 || y <= -this.height);
         return isX && isY;
     }
 
@@ -35,7 +35,7 @@ export default class DoctorGameEngine {
     }
 
     setCursorPosition(x, y) {
-        if (isInBounds(x, y)) {
+        if (this.isInBounds(x, y)) {
             this.cursorPosition = { x, y };
             return true;
         }
