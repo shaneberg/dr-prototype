@@ -1,6 +1,11 @@
 const path = require('path');
 
 module.exports = {
+    module: {
+        rules: [
+            { test: /\.glsl$/, use: 'webpack-glsl-loader' },
+        ]
+    },
     mode: 'development',
     devtool: 'inline-source-map',
     devServer: {
@@ -10,5 +15,5 @@ module.exports = {
     output: {
         filename: 'main.js',
         path: path.resolve(__dirname, 'dist'),
-    },
+    }
 };

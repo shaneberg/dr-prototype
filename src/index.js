@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import DoctorGameEngine from './engine';
+import cursorFragShader from './cursor.frag.glsl';
+import cursorVertShader from './cursor.vert.glsl';
 
 let renderer = null;
 let scene = null;
@@ -44,32 +46,14 @@ let getLinesForCursor = (cursorPosition) => {
     return line;
 };
 
-
-let getVertexShader = () => {
-    let vert = `
-        varying vec3 vUv;
-
-        void main() {
-        vUv = position;
-
-        vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
-        gl_Position = projectionMatrix * modelViewPosition;
-    }`;
-
-    return vert;
-
-};
-
 let getFragmentShader = () => {
-    let frag = `
-      void main() {
-        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-      }
-    `;
-
-    return frag;
+    return cursorFragShader;
+};
+let getVertexShader = () => {
+    return cursorVertShader;
 };
 
+// todo, loaded shader
 let getLineMaterial = () => {
     let material =  new THREE.ShaderMaterial({
         uniforms: {},
