@@ -39,9 +39,44 @@ let getLinesForCursor = (cursorPosition) => {
     points.push( new THREE.Vector3(x1, y1, 0));
 
     let geometry = new THREE.BufferGeometry().setFromPoints( points );
-    let material = new THREE.LineBasicMaterial( { color });
+    let material = new THREE.ShaderMaterial(getLineMaterial());
     let line = new THREE.Line( geometry, material );
     return line;
+};
+
+
+let getVertexShader = () => {
+    let vert = `
+        varying vec3 vUv;
+
+        void main() {
+        vUv = position;
+
+        vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
+        gl_Position = projectionMatrix * modelViewPosition;
+    }`;
+
+    return vert;
+
+};
+
+let getFragmentShader = () => {
+    let frag = `
+      void main() {
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+      }
+    `;
+
+    return frag;
+};
+
+let getLineMaterial = () => {
+    let material =  new THREE.ShaderMaterial({
+        uniforms: {},
+        fragmentShader: getFragmentShader(),
+        vertexShader: getVertexShader(),
+    });
+    return material;
 };
 
 let getLinesForPiece = (piece) => {
