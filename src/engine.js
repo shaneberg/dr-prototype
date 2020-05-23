@@ -1,37 +1,34 @@
-// properties
-// width
-// height
-//
 
-// TODO - What should a cell look like?
-// TODO - Can we do double array of
-
-export default class DoctorGameEngine {
-    // TODO - use dependency injection for game state
+// DoctorGameEngine
+class DoctorGameEngine {
     constructor(options) {
         this.cursorPosition = {
             x: 0,
             y: 0
         };
+
         this.height = options.height;
         this.width = options.width;
         this.numTypes = options.numTypes;
         this.minMatchSize = options.minMatchSize;
 
-        let initResult = this.initialize();
-
-        this.printBoard();
+        this.board = this.createBoard(this.height, this.width);
     }
 
     isInBounds(x, y) {
         let isX = !(x < 0 || x >= this.width);
-        let isY = !(y > 0 || y <= -this.height);
+        let isY = !(y < 0 || y >= this.height);
         return isX && isY;
+    }
+
+    // returns false if we can't move
+    moveCursor(xDelta, yDelta) {
+        let curPosition = this.getCursorPosition();
+        return this.setCursorPosition(curPosition.x + xDelta, curPosition.y + yDelta);
     }
 
     getCursorPosition() {
         return this.cursorPosition;
-
     }
 
     setCursorPosition(x, y) {
@@ -39,6 +36,8 @@ export default class DoctorGameEngine {
             this.cursorPosition = { x, y };
             return true;
         }
+
+        console.log(`cannot move to ${x}, ${y} because it is out of bounds`);
         return false;
     }
 
@@ -81,11 +80,6 @@ export default class DoctorGameEngine {
         };
     }
 
-    initialize() {
-        this.board = this.createBoard(this.height, this.width);
-        return !!this.board;
-    }
-
     getBoardMap() {
         return this.board;
     }
@@ -93,18 +87,6 @@ export default class DoctorGameEngine {
     getPiece(x, y) {
         return this.board[x][y];
     }
-
-    printBoard() {
-        let board = this.getBoardMap();
-        // assume a square
-        let rows = board[0].length;
-        let cols = board.length;
-        for (let i = 0; i < rows; i++) {
-            let rowToPrint = `row ${i}: `;
-            for (let j = 0; j < cols; j++) {
-                rowToPrint += ' ' + board[j][i].type;
-            }
-            console.log(rowToPrint);
-        }
-    }
 }
+
+export default DoctorGameEngine;
