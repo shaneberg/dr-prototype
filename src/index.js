@@ -161,13 +161,38 @@ let renderer = view.getRenderer();
 let scene = view.getScene();
 let camera = view.getCamera();
 
-var animate = function () {
-    requestAnimationFrame( animate );
+let enableOverlay = true;
 
+let updateDebugText = () => {
+    let time = new Date();
+    let timeRunning = (time.getTime() - startTime.getTime()) / 1000;
+    timeRunning = timeRunning.toFixed(1);
+    overlay.innerHTML = `time running: ${timeRunning} seconds`;
+    setTimeout(updateDebugText, 100);
+};
+
+let animate = () => {
+    requestAnimationFrame( animate );
     update();
     renderer.render( scene, camera );
 };
 
-document.body.appendChild( view.getRenderer().domElement );
+view.getRenderer().domElement.style.position = 'absolute';
+let container = document.createElement('div');
+container.style.position = 'relative';
+
+let startTime = new Date();
+let overlay = document.createElement('div');
+overlay.innerHTML = 'debug overlay';
+overlay.style.color = 'white';
+overlay.style.position = 'absolute';
+overlay.style.margin = '10px';
+overlay.style.fontFamily = 'monospace';
+
+container.appendChild(view.getRenderer().domElement);
+
+enableOverlay && container.appendChild(overlay);
+enableOverlay && updateDebugText();
+document.body.appendChild(container);
 
 animate();
