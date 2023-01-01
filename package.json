@@ -23,8 +23,8 @@
     "homepage": "https://github.com/seanhaneberg/dr-prototype#readme",
     "devDependencies": {
         "gh-pages": "^2.2.0",
-        "webpack": "^4.42.1",
-        "webpack-cli": "^3.3.11",
+        "webpack": "^5.75.0",
+        "webpack-cli": "^5.0.1",
         "webpack-dev-server": "^3.10.3",
         "webpack-glsl-loader": "^1.0.1"
     },
